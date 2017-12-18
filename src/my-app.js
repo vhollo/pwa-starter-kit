@@ -1,6 +1,4 @@
 import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
-import '../node_modules/@polymer/app-layout/app-drawer/app-drawer.js';
-import '../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
 import '../node_modules/@polymer/app-layout/app-header/app-header.js';
 import '../node_modules/@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '../node_modules/@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
@@ -8,6 +6,7 @@ import '../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '../node_modules/@polymer/iron-pages/iron-pages.js';
 import '../node_modules/@polymer/iron-selector/iron-selector.js';
 import '../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import './drawer-layout.js';
 import './my-icons.js';
 
 import { store } from './store/store.js';
@@ -24,8 +23,16 @@ class MyApp extends Element {
         display: block;
       }
 
-      app-drawer-layout:not([narrow]) [drawer-toggle] {
-        display: none;
+      @media (min-width: 768px) {
+        .drawer-toggle {
+          display: none;
+        }
+      }
+
+      .drawer {
+        width: 200px;
+        height: 100%;
+        background: #FFF;
       }
 
       app-header {
@@ -55,23 +62,23 @@ class MyApp extends Element {
       }
     </style>
 
-    <app-drawer-layout fullbleed>
+    <drawer-layout id="drawerLayout">
       <!-- Drawer content -->
-      <app-drawer id="drawer" slot="drawer">
+      <div class="drawer" slot="drawer">
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="view1" href="[[rootPath]]view1">View One</a>
           <a name="view2" href="[[rootPath]]view2">View Two</a>
           <a name="view3" href="[[rootPath]]view3">View Three</a>
         </iron-selector>
-      </app-drawer>
+      </div>
 
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
         <app-header slot="header" condenses reveals effects="waterfall">
           <app-toolbar>
-            <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
+            <paper-icon-button icon="my-icons:menu" on-click="_openDrawer" class="drawer-toggle"></paper-icon-button>
             <div main-title>My App</div>
           </app-toolbar>
         </app-header>
@@ -83,7 +90,7 @@ class MyApp extends Element {
           <my-view404 name="view404"></my-view404>
         </iron-pages>
       </app-header-layout>
-    </app-drawer-layout>
+    </drawer-layout>
 `;
   }
 
@@ -157,10 +164,12 @@ class MyApp extends Element {
   _notifyPathChanged() {
     store.dispatch(navigate(window.decodeURIComponent(window.location.pathname)));
 
-    // Close a non-persistent drawer when the page & route are changed.
-    if (!this.$.drawer.persistent) {
-      this.$.drawer.close();
-    }
+    // Close the drawer when the page & route are changed.
+    this.$.drawerLayout.opened = false;
+  }
+
+  _openDrawer() {
+    this.$.drawerLayout.opened = true;
   }
 
   _pageChanged(page) {
