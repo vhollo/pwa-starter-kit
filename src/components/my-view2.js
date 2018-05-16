@@ -13,6 +13,7 @@ import { PageViewElement } from './page-view-element.js';
 import { SharedStyles } from './shared-styles.js';
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import './counter-element.js';
+import './teamname-element.js';
 
 // This element is connected to the redux store.
 import { store } from '../store.js';
@@ -40,6 +41,9 @@ class MyView2 extends connect(store)(PageViewElement) {
         in the Redux store, and you can see the total number of clicks reflected in
         the bubble above.</p>
         <br><br>
+        </section>
+      <section>
+        <teamname-element teamname="${props.teamname}" -on-teamname-changed="${() => store.dispatch(teamname())}"></teamname-element>
       </section>
       <section>
         <p>
