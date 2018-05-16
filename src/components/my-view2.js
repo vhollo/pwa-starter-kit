@@ -20,11 +20,14 @@ import { store } from '../store.js';
 
 // These are the actions needed by this element.
 import { increment, decrement } from '../actions/counter.js';
+import { change } from '../actions/team.js';
 
 // We are lazy loading its reducer.
 import counter from '../reducers/counter.js';
+import team from '../reducers/team.js';
 store.addReducers({
-  counter
+  counter,
+  team
 });
 
 class MyView2 extends connect(store)(PageViewElement) {
@@ -43,7 +46,7 @@ class MyView2 extends connect(store)(PageViewElement) {
         <br><br>
         </section>
       <section>
-        <teamname-element teamname="${props.teamname}" -on-teamname-changed="${() => store.dispatch(teamname())}"></teamname-element>
+        <teamname-element teamname="${props.teamname}" on-teamname-changed="${() => store.dispatch(change())}"></teamname-element>
       </section>
       <section>
         <p>
@@ -59,13 +62,16 @@ class MyView2 extends connect(store)(PageViewElement) {
   static get properties() { return {
     // This is the data from the store.
     _clicks: Number,
-    _value: Number
+    _value: Number,
+    teamname: String
   }}
 
   // This is called every time something is updated in the store.
   _stateChanged(state) {
     this._clicks = state.counter.clicks;
     this._value = state.counter.value;
+    this.teamname = state.team.name;
+console.log(state.team);
   }
 }
 
