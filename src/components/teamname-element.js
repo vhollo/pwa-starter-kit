@@ -23,6 +23,7 @@ class TeamnameElement extends LitElement {
         span { width: 20px; display: inline-block; text-align: center; font-weight: bold;}
       </style>
       <div>
+        <!--input id="teamname" type="text" value="${props.teamname}" on-change="${(e) => this._onTeamNameChange(e)}" /-->
         <input id="teamname" type="text" value="${props.teamname}" on-change="${(e) => this._onTeamNameChange(e)}" />
         <p>
           Teamname: <span>${props.teamname}</span>
@@ -42,9 +43,9 @@ class TeamnameElement extends LitElement {
   }
 
   _onTeamNameChange(e) {
-//console.log(e);
-    this.teamname = e.path[0].value;
-    this.dispatchEvent(new CustomEvent('teamname-changed'));
+console.log('element_e.target.value:',e.target.value);
+    //this.teamname = e.path[0].value;
+    this.dispatchEvent(new CustomEvent('teamname-changed', {"detail": e.target.value}));
   }
 
 }

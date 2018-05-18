@@ -46,7 +46,7 @@ class MyView2 extends connect(store)(PageViewElement) {
         <br><br>
         </section>
       <section>
-        <teamname-element teamname="${props.teamname}" on-teamname-changed="${() => store.dispatch(change())}"></teamname-element>
+        <teamname-element teamname="${props.teamname}" on-teamname-changed="${(e) => store.dispatch(change(e.detail))}"></teamname-element>
       </section>
       <section>
         <p>
@@ -71,7 +71,7 @@ class MyView2 extends connect(store)(PageViewElement) {
     this._clicks = state.counter.clicks;
     this._value = state.counter.value;
     this.teamname = state.team.name;
-console.log(state.team);
+console.log('view2_state.team:',state.team);
   }
 }
 

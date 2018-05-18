@@ -10,8 +10,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 export const CHANGE = 'CHANGE';
 
-export const change = () => {
+export const cchange = () => {
   return {
     type: CHANGE
   };
 };
+
+export const change = (name) => {
+console.log('action_name:',name);
+  return {
+    type: CHANGE,
+    name
+  };
+};
+

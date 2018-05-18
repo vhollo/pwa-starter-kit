@@ -10,11 +10,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 import { CHANGE } from '../actions/team.js';
 
-const team = (state = {name: 'yellobello'}, action) => {
+const team = (state = {}, action) => {
   switch (action.type) {
     case CHANGE:
-      return {
-        'name': state.name
+    console.log('reducer_action:', action);
+    return {
+        'name': action.name
       };
     default:
       return state;
